@@ -7,6 +7,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,9 +18,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
+
+    private static final String TAG = "MainActivity";
 
     private GoogleMap mMap;
     private EditText editText;
@@ -44,7 +49,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String label = editText.getText().toString();
         MarkerOptions options = new MarkerOptions().title(label).position(new LatLng(point.latitude, point.longitude));
         mMap.addMarker(options);
+
+        // https://developer.android.com/training/data-storage/shared-preferences.html#java
+        // https://developers.google.com/android/reference/com/google/android/gms/maps/model/MarkerOptions.html
+        sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Set<String> set = new HashSet<String>();
+        set.add(options.getPosition().toString());
+        Log.i(TAG, options.getPosition().toString() + "+" + options.getTitle().toString());
+        set.add(options.getTitle().toString());
+        editor.putStringSet("Marker", set);
+        editor.apply();
     }
+
 
 
     /**
