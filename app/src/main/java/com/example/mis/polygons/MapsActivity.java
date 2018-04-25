@@ -52,13 +52,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // https://developer.android.com/training/data-storage/shared-preferences.html#java
         // https://developers.google.com/android/reference/com/google/android/gms/maps/model/MarkerOptions.html
+
         sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
+
         Set<String> set = new HashSet<String>();
         set.add(options.getPosition().toString());
-        Log.i(TAG, options.getPosition().toString() + "+" + options.getTitle().toString());
         set.add(options.getTitle().toString());
-        editor.putStringSet("Marker", set);
+
+        editor.putStringSet("Marker", set); // Marker zählen und das als key nehmen? -> Name ist ja nicht eindeutig
         editor.apply();
     }
 
